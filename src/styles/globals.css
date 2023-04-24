@@ -2,3 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    background-color: #65647C;
+    color: white;
+}
+
+.select-rounded {
+    border-radius: 5px;
+    min-width: 2.5em;
+    color: white;
+}
+
+.input-rounded {
+    border-radius: 5px;
+    background-color: #31304d;
+    padding: 0.3rem 1rem;
+    color: white;
+}

@@ -3,8 +3,19 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { createUser } from "@/api/user.api";
+import styles from "./RegusterForm.module.css";
+import { styled } from "@mui/styles";
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -14,6 +25,29 @@ const schema = yup.object({
   username: yup.string().required(),
   password: yup.string().required(),
   role: yup.number().optional(),
+});
+
+const CssTextField = styled(TextField)({
+  '& label.Mui-focused': {
+    color: 'orange',
+  },
+  '& label': {
+    color: 'white',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: 'white',
+    },
+    '&:hover fieldset': {
+      borderColor: 'orangered',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: 'orange',
+    },
+  },
+  '& input': {
+    color: 'orange'
+  },
 });
 
 interface Props {
@@ -36,69 +70,105 @@ export const RegisterForm = ({ roles }: Props) => {
   const [role, setRole] = useState(undefined);
 
   return (
-    <>
+    <div className="flex justify-center flex-col w-1/2">
+      <Typography color="orange" className="mb-5 text-4xl text-center"> Registration form </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-2">
-          <label htmlFor="name"> Name </label>
+        <FormControl fullWidth className="mb-2">
           <Controller
             control={control}
             name="name"
-            render={({ field }) => <input {...field} type="text" />}
+            render={({ field }) => (
+              <CssTextField
+                label="Name"
+                {...field}
+                type="text"
+              />
+            )}
           />
-        </div>
-        <div className="mb-2">
-          <label htmlFor="lastName"> Last Name </label>
+        </FormControl>
+        <FormControl fullWidth className="mb-2 ">
           <Controller
             control={control}
             name="lastName"
-            render={({ field }) => <input {...field} type="text" />}
+            render={({ field }) => (
+              <CssTextField label="Last name" 
+              {...field} type="text" />
+            )}
           />
-        </div>
-        <div className="mb-2">
-          <label htmlFor="username"> Username </label>
+        </FormControl>
+        <FormControl fullWidth className="mb-2 ">
           <Controller
             control={control}
             name="username"
-            render={({ field }) => <input {...field} type="text" />}
+            render={({ field }) => (
+              <CssTextField label="Username" 
+              {...field} type="text" />
+            )}
           />
-        </div>
-        <div className="mb-2">
-          <label htmlFor="email"> Email </label>
+        </FormControl>
+        <FormControl fullWidth className="mb-2 ">
           <Controller
             control={control}
             name="email"
-            render={({ field }) => <input {...field} type="email" />}
+            render={({ field }) => (
+              <CssTextField label="Email"
+              {...field} type="email" />
+            )}
           />
-        </div>
-        <div className="mb-2">
-          <label htmlFor="password"> Password </label>
+        </FormControl>
+        <FormControl fullWidth className="mb-2 ">
           <Controller
             control={control}
             name="password"
-            render={({ field }) => <input {...field} type="password" />}
+            render={({ field }) => (
+              <CssTextField label="Password" 
+              {...field} type="password" />
+            )}
           />
-        </div>
-        <div className="mb-2">
-          <label htmlFor="role"> Role </label>
+        </FormControl>
+        <FormControl fullWidth className="mb-2 ">
+          <InputLabel id="role-select" className="text-white">
+            Role
+          </InputLabel>
           <Controller
             control={control}
             name="role"
             render={({ field }) => (
-              <Select {...field} name='role' onChange={ (e: SelectChangeEvent<{ id: number; name: string; }>) => { setRole(e.target.value as any); } }>
-                <MenuItem value='0' selected> Select a role </MenuItem>
+              <Select
+                {...field}
+                name="role"
+                style={{
+                  color: "white",
+                  borderRadius: "10px",
+                }}
+                label="Role"
+                labelId="role-select"
+                onChange={(
+                  e: SelectChangeEvent<{ id: number; name: string }>
+                ) => {
+                  setRole(e.target.value as any);
+                }}
+              >
+                <MenuItem value="0" selected>
+                  {" "}
+                  Select a role{" "}
+                </MenuItem>
                 {roles.map((role) => (
-                  <MenuItem key={role.id} value={ role.id } > {role.name} </MenuItem>
+                  <MenuItem key={role.id} value={role.id}>
+                    {" "}
+                    {role.name}{" "}
+                  </MenuItem>
                 ))}
               </Select>
             )}
           />
-        </div>
+        </FormControl>
         <div className="mb-2">
-          <Button type="submit" color="success">
+          <Button type="submit" color="success" variant="contained">
             Send
           </Button>
         </div>
       </form>
-    </>
+    </div>
   );
 };

@@ -1,20 +1,19 @@
 import { getAllRoles } from "@/api/role.api";
 import { RegisterForm } from "@/components/auth/register/RegisterForm";
-import { Base } from "@/components/base/Base";
+import { Layout } from "@/components/base/Layout";
 import { Role } from "@/interfaces";
 import React from "react";
 
 function RegisterIndex({ roles }: { roles: Role[] }) {
   return (
-    <Base>
+    <Layout>
       <RegisterForm roles={roles} />
-    </Base>
+    </Layout>
   );
 }
 
 export async function getServerSideProps() {
   const roles = await (await getAllRoles()).data;
-  console.log(roles);
 
   return { props: { roles } };
 }
